@@ -1,0 +1,65 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  game: CollectionEntry<'games-made'>;
+  index?: number;
+}
+
+const { game, index = 0 } = Astro.props;
+const { title, tagline, cover, status, engine, platforms } = game.data;
+
+const statusStyles: Record<string, { label: string; classes: string }> = {
+  released: { label: 'Released', classes: 'bg-emerald-500/15 text-emerald-500' },
+  'in-development': { label: 'In Development', classes: 'bg-amber-500/15 text-amber-500' },
+  prototype: { label: 'Prototype', classes: 'bg-sky-500/15 text-sky-500' },
+  jam: { label: 'Game Jam', classes: 'bg-fuchsia-500/15 text-fuchsia-500' },
+  'on-hold': { label: 'On Hold', classes: 'bg-zinc-500/15 text-zinc-400' },
+};
+const badge = statusStyles[status];
+---
+
+<a
+  href={`/projects/produce/${game.id}/`}
+  class="card group flex flex-col overflow-hidden rounded-xl border border-line bg-panel"
+  data-reveal
+  style={`--i:${index}`}
+>
+  <!-- Cover -->
+  <div class="relative aspect-video overflow-hidden">
+    {
+      cover ? (
+        <Image
+          src={cover}
+          alt={`${title} cover art`}
+          width={640}
+          class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+      ) : (
+        <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-accent/25 via-soft to-accent2/20">
+          <span class="font-display text-5xl font-bold text-ink/20 transition-transform duration-500 group-hover:scale-110">
+            {title.charAt(0)}
+          </span>
+        </div>
+      )
+    }
+    <span
+      class={`absolute top-3 right-3 rounded-full px-2.5 py-1 text-xs font-semibold backdrop-blur-sm ${badge.classes}`}
+    >
+      {badge.label}
+    </span>
+  </div>
+
+  <!-- Body -->
+  <div class="flex flex-1 flex-col gap-2 p-5">
+    <h3 class="font-display text-lg font-bold transition-colors group-hover:text-accent">
+      {title}
+    </h3>
+    {tagline && <p class="line-clamp-2 text-sm text-muted">{tagline}</p>}
+    <div class="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1 pt-2 text-xs text-muted">
+      {engine && <span class="rounded bg-accent-soft px-2 py-0.5 font-medium">{engine}</span>}
+      {platforms.length > 0 && <span>{platforms.join(' · ')}</span>}
+    </div>
+  </div>
+</a>

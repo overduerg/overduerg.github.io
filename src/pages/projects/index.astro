@@ -1,0 +1,45 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import ProjectCategoryCard from '../../components/ProjectCategoryCard.astro';
+
+const gamesMade = await getCollection('games-made');
+const gamesPlayed = await getCollection('games-played');
+---
+
+<BaseLayout title="Projects" description="What I produce and what I consume.">
+  <div class="mx-auto max-w-5xl px-4 py-16 sm:px-6">
+    <header class="mb-14" data-reveal>
+      <p class="mb-2 font-mono text-xs font-medium tracking-[0.2em] text-accent uppercase">
+        // projects
+      </p>
+      <h1 class="font-display text-3xl font-bold tracking-tight sm:text-5xl">
+        What I <span class="text-gradient">make</span> &amp; what I
+        <span class="text-gradient">play</span>
+      </h1>
+      <p class="mt-4 max-w-xl text-muted">
+        Two sides of the same coin — the games I build, and the games that inspire me.
+      </p>
+    </header>
+
+    <div class="grid gap-6 sm:grid-cols-2">
+      <ProjectCategoryCard
+        title="Produce"
+        description="Games I've made — prototypes, jam builds, and works in progress."
+        count={gamesMade.length}
+        href="/projects/produce/"
+        icon="produce"
+        index={0}
+      />
+      <ProjectCategoryCard
+        title="Consume"
+        description="My favourite games — the ones I've played and loved."
+        count={gamesPlayed.length}
+        href="/projects/consume/"
+        icon="consume"
+        index={1}
+      />
+    </div>
+  </div>
+</BaseLayout>

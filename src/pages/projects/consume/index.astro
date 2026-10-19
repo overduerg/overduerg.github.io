@@ -1,0 +1,60 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import GamePlayedCard from '../../../components/GamePlayedCard.astro';
+
+const gamesPlayed = [...(await getCollection('games-played'))].sort(
+  (a, b) => (b.data.completedDate?.valueOf() ?? 0) - (a.data.completedDate?.valueOf() ?? 0),
+);
+
+const filters = [
+  { key: 'all', label: 'All' },
+  { key: 'playing', label: 'Playing' },
+  { key: 'completed', label: 'Completed' },
+  { key: 'backlog', label: 'Backlog' },
+  { key: 'on-hold', label: 'On Hold' },
+  { key: 'dropped', label: 'Dropped' },
+];
+---
+
+<BaseLayout title="Consume" description="My favourite games.">
+  <div class="mx-auto max-w-5xl px-4 py-16 sm:px-6">
+    <header class="mb-10" data-reveal>
+      <p class="mb-2 font-mono text-xs font-medium tracking-[0.2em] text-accent uppercase">
+        // consume
+      </p>
+      <h1 class="font-display text-3xl font-bold tracking-tight sm:text-5xl">
+        My Favourite <span class="text-gradient">Games</span>
+      </h1>
+    </header>
+
+    <div class="mb-8 flex flex-wrap gap-2" data-reveal>
+      {
+        filters.map((f, i) => (
+          <button
+            type="button"
+            data-filter={f.key}
+            class:list={[
+              'filter-btn rounded-full border border-line bg-panel px-3 py-1 text-xs font-medium text-muted',
+              i === 0 && 'filter-active',
+            ]}
+          >
+            {f.label}
+          </button>
+        ))
+      }
+    </div>
+
+    {
+      gamesPlayed.length === 0 ? (
+        <p class="text-muted">No games logged yet.</p>
+      ) : (
+        <div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
+          {gamesPlayed.map((game, i) => (
+            <GamePlayedCard game={game} index={i} />
+          ))}
+        </div>
+      )
+    }
+  </div>
+</BaseLayout>
