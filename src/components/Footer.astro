@@ -1,22 +1,11 @@
 ---
-import { CONTACT, SITE } from '../consts';
-
-const year = new Date().getFullYear();
+import { CONTACT } from '../consts';
 ---
 
 <footer class="border-t border-line">
   <div
-    class="mx-auto flex max-w-5xl flex-col items-center justify-between gap-4 px-4 py-8 text-sm text-muted sm:flex-row sm:px-6"
+    class="mx-auto flex max-w-5xl items-center justify-center px-4 py-8 text-sm text-muted sm:px-6"
   >
-    <p>
-      &copy; {year}
-      {SITE.name}. Built with <a
-        href="https://astro.build"
-        class="text-accent hover:underline"
-        target="_blank"
-        rel="noopener noreferrer">Astro</a
-      >.
-    </p>
     <a
       href={CONTACT.github}
       target="_blank"

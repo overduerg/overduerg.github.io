@@ -8,7 +8,7 @@ Personal portfolio/gaming site for GitHub Pages (`https://overduerg.github.io`).
 - **Tailwind CSS v4** via the `@tailwindcss/vite` plugin — NOT `@astrojs/tailwind`
   (deprecated). Config is CSS-first in `src/styles/global.css` (`@theme` / `@theme inline`).
 - **Content Collections** (MDX) defined in `src/content.config.ts` with Zod schemas:
-  `games-made`, `games-played`, `projects`.
+  `games-made`, `games-played`.
 - **View transitions** via `<ClientRouter />` in `src/layouts/BaseLayout.astro`.
 - Vanilla TS only for interactivity (`src/scripts/site.ts`). No UI frameworks — do not add
   React/Vue/Svelte islands without asking.

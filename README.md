@@ -21,7 +21,6 @@ All content lives in `src/content/` as MDX files, validated by the schemas in
 
 - `src/content/games-made/` — games you made / are making (shown under **Produce**)
 - `src/content/games-played/` — your gaming log, status + rating (shown under **Consume**)
-- `src/content/projects/` — programming projects (currently unused)
 
 Copy an existing entry and edit the frontmatter. Set `featured: true` to surface an entry
 on the homepage.
@@ -56,7 +55,6 @@ back to a styled letter placeholder, so images are always optional.
 | :-------------- | :----- | :-------------- |
 | `games-made`    | 16:9   | 1280 × 720      |
 | `games-played`  | 1:1    | 512 × 512       |
-
 `.jpg`, `.png`, `.webp` and `.avif` all work. Astro optimizes and resizes them at build
 time — use large originals, don't pre-shrink them.
 

@@ -48,27 +48,4 @@ const gamesMade = defineCollection({
     }),
 });
 
-/**
- * Programming projects (non-game).
- */
-const projects = defineCollection({
-  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/projects' }),
-  schema: ({ image }) =>
-    z.object({
-      title: z.string(),
-      description: z.string(),
-      cover: image().optional(),
-      status: z.enum(['active', 'maintained', 'archived', 'wip']),
-      tech: z.array(z.string()).default([]),
-      links: z
-        .object({
-          github: z.url().optional(),
-          demo: z.url().optional(),
-        })
-        .default({}),
-      startDate: z.coerce.date().optional(),
-      featured: z.boolean().default(false),
-    }),
-});
-
-export const collections = { 'games-played': gamesPlayed, 'games-made': gamesMade, projects };
+export const collections = { 'games-played': gamesPlayed, 'games-made': gamesMade };

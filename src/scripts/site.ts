@@ -5,32 +5,9 @@
  * working across Astro view-transition page swaps without re-execution.
  */
 
-const getTheme = () => localStorage.getItem('theme') ?? 'dark';
-
-function applyTheme(theme: string, root: HTMLElement = document.documentElement) {
-  root.classList.toggle('dark', theme === 'dark');
-}
-
-/* ── Theme + UI clicks (delegated) ─────────────────────────────── */
+/* ── UI clicks (delegated) ─────────────────────────────────────── */
 document.addEventListener('click', (event) => {
   const target = event.target as HTMLElement;
-
-  // Dark / light toggle
-  const themeBtn = target.closest('[data-action="toggle-theme"]');
-  if (themeBtn) {
-    const isDark = document.documentElement.classList.toggle('dark');
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    return;
-  }
-
-  // Mobile nav
-  const navBtn = target.closest('[data-action="toggle-nav"]');
-  if (navBtn) {
-    const nav = document.getElementById('mobile-nav');
-    const open = nav?.classList.toggle('hidden') === false;
-    navBtn.setAttribute('aria-expanded', String(open));
-    return;
-  }
 
   // Copy-to-clipboard (contact page)
   const copyBtn = target.closest<HTMLElement>('[data-copy]');
@@ -62,11 +39,10 @@ document.addEventListener('click', (event) => {
   }
 });
 
-/* ── Keep the theme + js flag across view-transition swaps ─────── */
+/* ── Keep the js flag across view-transition swaps ─────────────── */
 document.addEventListener('astro:before-swap', (event) => {
   const { newDocument } = event as Event & { newDocument: Document };
   newDocument.documentElement.classList.add('js');
-  applyTheme(getTheme(), newDocument.documentElement);
 });
 
 /* ── Scroll reveal ─────────────────────────────────────────────── */
@@ -93,6 +69,25 @@ function setupReveal() {
   els.forEach((el) => io.observe(el));
 }
 document.addEventListener('astro:page-load', setupReveal);
+
+/* ── Synchronize blinking cursors (logo + hero) ────────────────
+   A single interval drives every [data-cursor] element from one
+   shared clock (performance.now), so all cursors blink together —
+   no per-element CSS animation clocks to drift apart. */
+const BLINK_MS = 1100;
+let blinkTimer: number | undefined;
+
+function startBlinkSync() {
+  if (blinkTimer !== undefined) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  blinkTimer = window.setInterval(() => {
+    const off = Math.floor(performance.now() / (BLINK_MS / 2)) % 2 === 1;
+    document.querySelectorAll<HTMLElement>('[data-cursor]').forEach((el) => {
+      el.classList.toggle('cursor-off', off);
+    });
+  }, BLINK_MS / 2);
+}
+document.addEventListener('astro:page-load', startBlinkSync);
 
 /* ── Topbar logo animation ─────────────────────────────────────
    Cursor slides left, deletes back to "rg", then types the real
@@ -123,7 +118,8 @@ function setupLogoAnim() {
 
   const cursorEl = document.createElement('span');
   cursorEl.textContent = '_';
-  cursorEl.className = 'animate-blink text-accent';
+  cursorEl.className = 'text-accent';
+  cursorEl.dataset.cursor = '';
 
   const render = () => {
     root.textContent = '';

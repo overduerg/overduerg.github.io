@@ -5,20 +5,8 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ─── Theme tokens ─────────────────────────────────────────────── */
-/* Colors are CSS variables so the .dark class can re-theme at runtime. */
-:root {
-  --bg: #f4f5fb;
-  --soft: #ffffff;
-  --panel: #ffffff;
-  --ink: #0c0c16;
-  --muted: #585d74;
-  --line: #e3e5f1;
-  --accent: #5b21b6;
-  --accent-2: #0891b2;
-  --accent-soft: rgba(91, 33, 182, 0.12);
-  --glow: rgba(91, 33, 182, 0.25);
-}
-
+/* Dark-only theme: the .dark class is always set on <html>, so the
+   light palette below is intentionally omitted. */
 .dark {
   --bg: #06060d;
   --soft: #0c0c17;
@@ -159,6 +147,14 @@
 .js [data-reveal].revealed {
   opacity: 1;
   transform: none;
+}
+
+/* ── Synchronized blinking cursors (driven by site.ts) ──────── */
+[data-cursor] {
+  opacity: 1;
+}
+[data-cursor].cursor-off {
+  opacity: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {

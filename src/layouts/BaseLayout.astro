@@ -25,14 +25,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="canonical" href={canonicalURL} />
 
-    <!-- Set theme + js flag before first paint to avoid a flash -->
+    <!-- Set js flag before first paint (used by reveal-on-scroll) -->
     <script is:inline>
-      (() => {
-        const root = document.documentElement;
-        root.classList.add('js');
-        const stored = localStorage.getItem('theme');
-        root.classList.toggle('dark', stored ? stored === 'dark' : true);
-      })();
+      document.documentElement.classList.add('js');
     </script>
 
     <!-- Fonts -->
