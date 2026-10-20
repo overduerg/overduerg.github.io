@@ -7,6 +7,8 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://overduerg.github.io',
+  // Preload internal links on hover/focus for near-instant navigation.
+  prefetch: true,
   integrations: [mdx(), sitemap()],
   vite: {
     // Tailwind CSS v4 is integrated via its official Vite plugin
