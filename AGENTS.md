@@ -25,6 +25,16 @@ Personal portfolio/gaming site for GitHub Pages (`https://overduerg.github.io`).
 - `npm run build` — production build (validates content schemas)
 - `npm run preview` — serve the built site
 
+## Do not use the user's browser
+
+- **Never** launch Brave/Chrome/Edge on this machine for screenshots or automation. The
+  user's browser is already running; headless launches get forwarded to it and open real
+  tabs (this previously left ~100 tabs open).
+- Verify changes at the **source level**: compiled CSS/HTML, build output, `curl` against
+  the live site. The user does the visual browser check.
+- If automated screenshots are ever genuinely required, use a **Playwright-managed
+  Chromium** (separate binary, own temp profile) — never the user's installed browser.
+
 ## Conventions
 
 - Dark-first theming: `.dark` class on `<html>`, colors are CSS vars in `global.css`

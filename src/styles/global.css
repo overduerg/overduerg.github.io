@@ -70,6 +70,25 @@
   body {
     @apply bg-bg font-sans text-ink antialiased;
   }
+  /* Ambient gradient wash behind everything: a violet glow from the
+     top and a cyan one from the lower right, over the base colour. */
+  @supports (background: color-mix(in srgb, red, blue)) {
+    body {
+      background-image:
+        radial-gradient(
+          ellipse 90% 55% at 50% -8%,
+          color-mix(in srgb, var(--accent) 22%, transparent) 0%,
+          transparent 65%
+        ),
+        radial-gradient(
+          ellipse 70% 50% at 85% 108%,
+          color-mix(in srgb, var(--accent-2) 16%, transparent) 0%,
+          transparent 65%
+        );
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+    }
+  }
   ::selection {
     background: var(--accent);
     color: #fff;
